@@ -16,7 +16,7 @@ Examples:
 
 
 Thanks:
-Thanks to the Metasploit team for all their hard work.  Allowing their code to be used by the community is awesome, and really appreciated it.  Thanks to Jon Yates (@redbeardsec) for really helping to get my up to speed and providing his analysis on how payloads are generated.  Thanks to Justin Warner (@sixdub) for allowing me to include his shellcode encoder within Ordnance.
+Thanks to the Metasploit team for all their hard work.  Allowing their code to be used by the community is awesome, and really appreciated.  Thanks to Jon Yates (@redbeardsec) for really helping to get my up to speed and providing his analysis on how payloads are generated.  Thanks to Justin Warner (@sixdub) for allowing me to include his shellcode encoder within Ordnance.
 
 
 Call to Action:
