@@ -20,4 +20,4 @@ Thanks to the Metasploit team for all their hard work.  Allowing their code to b
 
 
 Call to Action:
-We'd love for an additional encder, or more, to be added to Veil-Ordnance.  The more that can be added in/ported, the better coverage in ensuring that at least one encoder could be used to prevent any specific bad character.  If anyone is willing to port one, or send us a python version of their encoder, please hit us up, or send a pull request!  We'd be happy to give full credit to you.
+We'd love for an additional encoder, or more, to be added to Veil-Ordnance.  The more that can be added in/ported, the better coverage in ensuring that at least one encoder could be used to prevent any specific bad character.  If anyone is willing to port one, or send us a python version of their encoder, please hit us up, or send a pull request!  We'd be happy to give full credit to you.
