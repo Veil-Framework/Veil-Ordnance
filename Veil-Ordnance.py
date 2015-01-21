@@ -86,15 +86,6 @@ def cli_parser():
         print "[*] Error: Please provide an IP address!"
         sys.exit()
 
-    # Checks to make sure IP address is valid ipv4 address except if using rev_tcp_dns
-    if args.ip is not None and args.payload.lower() != "rev_tcp_dns":
-        try:
-            socket.inet_aton(args.ip)
-        except socket.error:
-            print "[*] Error: You provided an invalid IPv4 address!"
-            print "[*] Error: Please re-run and use a valid IPv4 address!"
-            sys.exit()
-
     # Checks to make sure a valid port is used
     if 0 < args.port < 65536:
         pass
