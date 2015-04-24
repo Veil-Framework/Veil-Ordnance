@@ -45,7 +45,7 @@ def cli_parser():
         help="Bad characters to avoid")
     shell_in.add_argument(
         '--list-encoders', default=False, action='store_true',
-        help="Lists all available payloads.")
+        help="Lists all available encoders.")
     shell_in.add_argument(
         '--print-stats', default=False, action='store_true',
         help="Print information about the encoded shellcode.")
