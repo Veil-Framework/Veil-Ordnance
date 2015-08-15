@@ -6,7 +6,7 @@ import binascii
 import socket
 
 
-class RevTCPDNS:
+class PayloadModule:
 
     def __init__(self):
         self.name = "Reverse TCP DNS Stager (Stage 1)"

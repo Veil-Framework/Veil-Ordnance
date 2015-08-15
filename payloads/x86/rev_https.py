@@ -11,7 +11,7 @@ import struct
 import sys
 
 
-class RevHTTPS:
+class PayloadModule:
 
     def __init__(self):
         self.name = "Reverse HTTPS Stager (Stage 1)"

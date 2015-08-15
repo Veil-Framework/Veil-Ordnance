@@ -8,7 +8,7 @@ import socket
 import sys
 
 
-class RevTCPAP:
+class PayloadModule:
 
     def __init__(self):
         self.name = "Reverse TCP All Ports Stager (Stage 1)"

@@ -2,7 +2,7 @@
 # https://github.com/rapid7/metasploit-framework/blob/master/modules/payloads/stagers/windows/bind_tcp.rb
 
 
-class BindTCP:
+class PayloadModule:
 
     def __init__(self):
         self.name = "Bind TCP Stager (Stage 1)"
