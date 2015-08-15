@@ -60,8 +60,9 @@ def cli_parser(internal_encoders, internal_payloads):
         sys.exit()
 
     if args.list_payloads:
+        print " Encoder name    =>    Description"
         for payload in internal_payloads.itervalues():
-            print payload.name + " => " + payload.cli_name
+            print payload.cli_name + " => " + payload.name
         sys.exit()
 
     if args.list_encoders:

@@ -17,6 +17,7 @@ class PayloadModule:
         self.name = "Reverse HTTPS Stager (Stage 1)"
         self.description = "Connects back to a handler to download and run\
             fun files over HTTPS :)"
+        self.cli_name = "rev_https"
         self.platform = "Windows"
         self.arch = "x86"
         self.lport = 4444

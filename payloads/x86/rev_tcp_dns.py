@@ -12,6 +12,7 @@ class PayloadModule:
         self.name = "Reverse TCP DNS Stager (Stage 1)"
         self.description = "Resolves DNS address, connects back to a handler\
         to download and run fun files :)"
+        self.cli_name = "rev_tcp_dns"
         self.platform = "Windows"
         self.arch = "x86"
         self.lport = 4444
