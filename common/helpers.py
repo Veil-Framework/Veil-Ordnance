@@ -10,7 +10,7 @@ import argparse
 import sys
 
 
-def cli_parser(internal_encoders, internal_payloads):
+def cli_parser():
 
     # Command line argument parser
     parser = argparse.ArgumentParser(
@@ -57,17 +57,6 @@ def cli_parser(internal_encoders, internal_payloads):
 
     if args.h:
         parser.print_help()
-        sys.exit()
-
-    if args.list_payloads:
-        print " Encoder name    =>    Description"
-        for payload in internal_payloads.itervalues():
-            print payload.cli_name + " => " + payload.name
-        sys.exit()
-
-    if args.list_encoders:
-        for encoder in internal_encoders.itervalues():
-            print encoder.name + " => " + encoder.cli_name
         sys.exit()
 
     # Checks if you have a payload set, and if not, to error out

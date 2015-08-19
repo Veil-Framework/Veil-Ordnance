@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 
+import sys
 from common import helpers
 from common import orchestra
 from encoders import xor
@@ -14,12 +15,12 @@ from payloads.x86 import rev_tcp_all_ports
 
 if __name__ == "__main__":
 
-    # instantiate the orchesta object and call the main conductor
-    the_conductor = orchestra.Conductor()
+    cli_args = helpers.cli_parser()
 
-    helpers.cli_parser(
-        the_conductor.active_encoders, the_conductor.active_payloads)
-    the_conductor.generate()
+    # instantiate the orchesta object and call the main conductor
+    the_conductor = orchestra.Conductor(cli_args)
+
+    the_conductor.generate(cli_args)
 
 
 '''
