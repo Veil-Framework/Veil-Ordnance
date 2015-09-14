@@ -9,12 +9,13 @@ import sys
 
 class EncoderModule:
 
-    def __init__(self):
+    def __init__(self, cli_arguments):
         self.name = "Single byte Xor Encoder"
         self.cli_name = "xor"
         self.description = "Single byte xor shellcode encoder"
         self.author = "Justin Warner (@sixdub)"
         self.bad_chars = None
+        self.set_bad_characters(cli_arguments.bad_chars)
         self.xor_key = 0x00
         self.shellcode = ""
         self.terminator = 0x00
@@ -64,33 +65,34 @@ class EncoderModule:
         return
 
     def set_bad_characters(self, bad_characters):
-        final_bad_chars = []
-        bad_characters = bad_characters.split('x')
+        if bad_characters is not None:
+            final_bad_chars = []
+            bad_characters = bad_characters.split('x')
 
-        # Do some validation on the received characters
-        for item in bad_characters:
-            if item == '':
-                pass
-            elif item in self.encoder_bad_chars:
-                print "[*] Encoder Error: Bad character specified is used for the decoder stub."
-                print "[*] Encoder Error: Please use different bad characters or another encoder!"
-                sys.exit()
-            else:
-                if len(item) == 2:
-                    # Thanks rohan (@cptjesus) for providing this regex code, and making me too lazy
-                    # to do it myself
-                    rohan_re_code = re.compile('[a-f0-9]{2}',flags=re.IGNORECASE)
-                    if rohan_re_code.match(item):
-                        final_bad_chars.append(item)
+            # Do some validation on the received characters
+            for item in bad_characters:
+                if item == '':
+                    pass
+                elif item in self.encoder_bad_chars:
+                    print "[*] Encoder Error: Bad character specified is used for the decoder stub."
+                    print "[*] Encoder Error: Please use different bad characters or another encoder!"
+                    sys.exit()
+                else:
+                    if len(item) == 2:
+                        # Thanks rohan (@cptjesus) for providing this regex code, and making me too lazy
+                        # to do it myself
+                        rohan_re_code = re.compile('[a-f0-9]{2}',flags=re.IGNORECASE)
+                        if rohan_re_code.match(item):
+                            final_bad_chars.append(item)
+                        else:
+                            print "[*] Bad Character Error: Invalid bad character detected."
+                            print "[*] Bad Character Error: Please provide bad characters in \\x00\\x01... format."
+                            sys.exit()
                     else:
                         print "[*] Bad Character Error: Invalid bad character detected."
                         print "[*] Bad Character Error: Please provide bad characters in \\x00\\x01... format."
                         sys.exit()
-                else:
-                    print "[*] Bad Character Error: Invalid bad character detected."
-                    print "[*] Bad Character Error: Please provide bad characters in \\x00\\x01... format."
-                    sys.exit()
-        self.bad_chars = [int("0x"+x, 16) for x in final_bad_chars]
+            self.bad_chars = [int("0x"+x, 16) for x in final_bad_chars]
         return
 
     # Takes a blob as input with a single byte key and returns blob output

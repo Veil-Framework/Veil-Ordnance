@@ -1,16 +1,9 @@
 #!/usr/bin/env python
 
 
-import sys
 from common import helpers
 from common import orchestra
-from encoders import xor
-from payloads.x86 import bind_tcp
-from payloads.x86 import rev_tcp
-from payloads.x86 import rev_tcp_dns
-from payloads.x86 import rev_https
-from payloads.x86 import rev_http
-from payloads.x86 import rev_tcp_all_ports
+
 
 
 if __name__ == "__main__":
@@ -20,7 +13,7 @@ if __name__ == "__main__":
     # instantiate the orchesta object and call the main conductor
     the_conductor = orchestra.Conductor(cli_args)
 
-    the_conductor.generate(cli_args)
+    the_conductor.generate_main(cli_args)
 
 
 '''

