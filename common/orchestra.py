@@ -32,16 +32,19 @@ class Conductor:
 
         # Check to see if we're just listing payloads
         if cli_arguments.list_payloads:
-            print "Payload Modules: \n"
-            for path, mod_name in self.active_payloads.itervalues():
-                print mod_name.cli_name + " => " + self.name
+            print "\nPayload Modules"
+            print "Command Line Name => Description"
+            print "-" * 79
+            for mod_name in self.active_payloads.itervalues():
+                print mod_name.cli_name + " => " + mod_name.name
             sys.exit()
 
+        # Check to see if we're just listing encoders
+
         # This is the main function where everything is called from
-        for full_path, payload_module in self.active_payloads.itervalues():
+        for payload_module in self.active_payloads.itervalues():
             if cli_arguments.payload.lower() == payload_module.cli_name:
                 payload_module.set_attrs(cli_arguments)
-
 
         return
 
