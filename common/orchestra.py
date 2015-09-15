@@ -50,8 +50,12 @@ class Conductor:
 
         # This is the main function where everything is called from
         # Iterate over payloads and find the user selected payload module
+        payload_found = False
         for payload_module in self.active_payloads.itervalues():
             if cli_arguments.payload.lower() == payload_module.cli_name:
+                payload_found = True
+                if hasattr(payload_module, 'set_attrs'):
+                    payload_module.set_attrs(cli_arguments.port, cli_arguments.ip)
                 payload_module.gen_shellcode()
 
                 if cli_arguments.bad_chars is not None and cli_arguments.encoder is not None:
@@ -78,11 +82,11 @@ class Conductor:
                     print payload_module.customized_shellcode
                     break
 
-            # This hits when not provided with a valid payload
-            else:
-                print "[*] Error: The payload you selected was not found!"
-                print "[*] Error: Please check available payloads and run again!"
-                sys.exit(1)
+        # This hits when not provided with a valid payload
+        if not payload_found:
+            print "[*] Error: The payload you selected was not found!"
+            print "[*] Error: Please check available payloads and run again!"
+            sys.exit(1)
 
         return
 
