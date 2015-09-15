@@ -14,14 +14,14 @@ class EncoderModule:
         self.cli_name = "xor"
         self.description = "Single byte xor shellcode encoder"
         self.author = "Justin Warner (@sixdub)"
-        self.bad_chars = None
-        self.set_bad_characters(cli_arguments.bad_chars)
         self.xor_key = 0x00
         self.shellcode = ""
         self.terminator = 0x00
         self.encoded_shellcode = ""
         self.encoded_payload_length = 0
-        self.encoder_bad_chars = ["eb", "18", "5e", "8d", "3e", "31", "c0", "db", "8a","1c", "06", "80", "f3", "88", "1f", "47", "40", "ef", "e8", "e3", "ff"]
+        self.encoder_bad_chars = ["eb", "18", "5e", "8d", "3e", "31", "c0", "db", "8a", "1c", "06", "80", "f3", "88", "1f", "47", "40", "ef", "e8", "e3", "ff"]
+        self.bad_chars = None
+        self.set_bad_characters(cli_arguments.bad_chars)
         self.misc_comments = """
             #This is the decoder stub
             #<_start>:

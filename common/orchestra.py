@@ -32,7 +32,7 @@ class Conductor:
 
         # Check to see if we're just listing payloads
         if cli_arguments.list_payloads:
-            print "\nPayload Modules"
+            print "\nAvailable Payload Modules"
             print "Command Line Name => Description"
             print "-" * 79
             for mod_name in self.active_payloads.itervalues():
@@ -40,11 +40,49 @@ class Conductor:
             sys.exit()
 
         # Check to see if we're just listing encoders
+        if cli_arguments.list_encoders:
+            print "\nAvailable Encoder Modules"
+            print "Command Line Name => Description"
+            print "-" * 79
+            for encoder_module in self.active_encoders.itervalues():
+                print encoder_module.cli_name + " => " + encoder_module.name
+            sys.exit()
 
         # This is the main function where everything is called from
+        # Iterate over payloads and find the user selected payload module
         for payload_module in self.active_payloads.itervalues():
             if cli_arguments.payload.lower() == payload_module.cli_name:
-                payload_module.set_attrs(cli_arguments)
+                payload_module.gen_shellcode()
+
+                if cli_arguments.bad_chars is not None and cli_arguments.encoder is not None:
+
+                    # Iterate over encoders until the one is found that's being used
+                    for selected_encoder in self.active_encoders.itervalues():
+                        if cli_arguments.encoder.lower() == selected_encoder.cli_name:
+                            # pass the shellcode into the encoder
+                            selected_encoder.set_shellcode(payload_module.customized_shellcode)
+                            # Encode the shellcode
+                            selected_encoder.do_the_magic()
+                            break
+
+                    if cli_arguments.print_stats:
+                        selected_encoder.all_the_stats(cli_arguments)
+
+                    # Print the encoded shellcode
+                    print selected_encoder.encoded_shellcode
+                    break
+
+                # If not encoding, then just print the shellcode
+                else:
+                    # Print the encoded shellcode
+                    print payload_module.customized_shellcode
+                    break
+
+            # This hits when not provided with a valid payload
+            else:
+                print "[*] Error: The payload you selected was not found!"
+                print "[*] Error: Please check available payloads and run again!"
+                sys.exit(1)
 
         return
 

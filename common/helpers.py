@@ -79,22 +79,6 @@ def cli_parser():
         print "[*] Error: Please provide a number between 1-65535!"
         sys.exit(1)
 
-    # Need to fix this if statement to iterate over loaded encoders and flag
-    # if user specified encoder is not found
-    if args.encoder is not None:
-        encoder_not_found = True
-        for encoder in internal_encoders.itervalues():
-            if args.encoder.lower() != encoder.cli_name:
-                pass
-            else:
-                encoder_not_found = False
-
-        # If encoder nor found, alert user and exit
-        if encoder_not_found:
-            print "[*] Error: The encoder you selected was not found!"
-            print "[*] Error: Please check available encoders and run again!"
-            sys.exit(1)
-
     # Checks to make sure if you are using an encoder, to supply bad characters
     if args.encoder is not None and args.bad_chars is None:
         print "[*] Error: Please provide bad characters to avoid with the encoder."
